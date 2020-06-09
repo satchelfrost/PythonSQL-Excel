@@ -1,0 +1,2 @@
+SELECT * FROM easy_drinks
+where main = 'soda'
