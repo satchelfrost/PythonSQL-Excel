@@ -38,9 +38,35 @@ class SpreadSheet:
             self.PrintTableFromWorksheet(sheet)
             print("")
 
+    def CreateTableQuery(self, ws, name):
+        # Insert portion of query
+        file = open("Queries/" + name + "_TableCreation.txt", 'w')
+        string = "CREATE TABLE " + ws.title
+        file.write(string)
+        string = ""
+
+        # Header field portion of query        
+        Headers = self.CreateHeadersFromWorksheet(ws)
+        fields = "\n(\n"
+        for i in range(len(Headers)):
+            fields += "\t" + Headers[i]
+            Cell = ws.cell(row = 2, column = i + 1).value
+            if isinstance(Cell, str) and Cell[0] == '"':
+                fields += " VARCHAR(30)"
+            if isinstance(Cell, int):
+                fields += " INT"
+            if isinstance(Cell, float):
+                fields += " DEC(4,2)" 
+            if (i != len(Headers) - 1):
+                fields += ", "
+            fields += "\n"
+        string += fields + ");"
+        file.write(string)
+        string = ""
+
     def GenerateInsertQuery(self, ws, name):
         # Insert portion of query
-        file = open("Queries/" + name + ".txt", 'w')
+        file = open("Queries/" + name + "_Insertion.txt", 'w')
         string = "INSERT INTO " + ws.title
         file.write(string)
         string = ""
@@ -74,8 +100,3 @@ class SpreadSheet:
             values += value
         string += values
         file.write(string)
-        
-ss = SpreadSheet("example.xlsx")
-for sheet in ss.wb.worksheets:
-    ss.GenerateInsertQuery(sheet, sheet.title)
-

@@ -4,9 +4,9 @@ from getpass import getpass
 class DB:
     def __init__(self):
         # Get password for database but don't display on screen
-        pswd = getpass("Password:")
+        #pswd = getpass("Password:")
         # Connect to database
-        self.db = ms.connect(host="localhost", user="root", passwd=pswd, db="gregs_list")
+        self.db = ms.connect(host="localhost", user="root", passwd="@ChronoTrigger64", db="gregs_list")
 
     def RunQuery(self, query):
         # Select a query from a file
@@ -31,3 +31,4 @@ class DB:
     def __del__(self):
         # Close out of our database
         self.db.close()
+
