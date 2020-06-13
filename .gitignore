@@ -1,2 +1,5 @@
 # igore the Queries folder
 Queries/*
+
+#ignore pycache
+__pycache__/*
