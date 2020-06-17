@@ -1,5 +1,8 @@
 # igore the Queries folder
 Queries/*
 
-#ignore pycache
+# ignore pycache
 __pycache__/*
+
+# ignore dummy excel
+Dummy*
