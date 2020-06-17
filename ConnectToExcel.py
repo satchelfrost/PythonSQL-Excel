@@ -1,11 +1,16 @@
 import openpyxl as opx
+import os
 from tabulate import tabulate
 
-class SpreadSheet:
+class ExcelFile:
     
     def __init__(self, name):
         # Load the excel file, and the specific sheet
         self.wb = opx.load_workbook(name)
+
+        # make a Queries folder if it doesn't exist
+        if not os.path.exists('Queries'):
+            os.mkdir("Queries")
 
     # This list will hold the data from the spreadsheet
     def CreateTableDataFromWorksheet(self, ws):
@@ -38,10 +43,10 @@ class SpreadSheet:
             self.PrintTableFromWorksheet(sheet)
             print("")
 
-    def CreateTableQuery(self, ws, name):
+    def CreateTableQuery(self, ws):
         # Insert portion of query
-        file = open("Queries/" + name + "_TableCreation.txt", 'w')
-        string = "CREATE TABLE " + ws.title
+        file = open("Queries/" + ws.title + "_TableCreation.txt", 'w')
+        string = "CREATE TABLE IF NOT EXISTS " + ws.title
         file.write(string)
         string = ""
 
@@ -51,7 +56,7 @@ class SpreadSheet:
         for i in range(len(Headers)):
             fields += "\t" + Headers[i]
             Cell = ws.cell(row = 2, column = i + 1).value
-            if isinstance(Cell, str) and Cell[0] == '"':
+            if isinstance(Cell, str):
                 fields += " VARCHAR(30)"
             if isinstance(Cell, int):
                 fields += " INT"
@@ -63,10 +68,11 @@ class SpreadSheet:
         string += fields + ");"
         file.write(string)
         string = ""
+        return ws.title + "_TableCreation.txt"
 
-    def GenerateInsertQuery(self, ws, name):
+    def CreateInsertQuery(self, ws):
         # Insert portion of query
-        file = open("Queries/" + name + "_Insertion.txt", 'w')
+        file = open("Queries/" + ws.title + "_Insertion.txt", 'w')
         string = "INSERT INTO " + ws.title
         file.write(string)
         string = ""
@@ -91,7 +97,11 @@ class SpreadSheet:
         for i in range(len(TableData)):
             value = "("
             for j in range(len(TableData[i])):
+                if isinstance(TableData[i][j], str):
+                    value += "'"
                 value += str(TableData[i][j])
+                if isinstance(TableData[i][j], str):
+                    value += "'"
                 if (j != len(TableData[i]) - 1):
                     value += ", "
             value += ")"
@@ -99,4 +109,6 @@ class SpreadSheet:
                     value += ",\n"
             values += value
         string += values
+        string += ";"
         file.write(string)
+        return ws.title + "_Insertion.txt"
