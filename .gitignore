@@ -4,5 +4,5 @@ Queries/*
 # ignore pycache
 __pycache__/*
 
-# ignore dummy excel
-Dummy*
+# ignore excel
+*.xlsx

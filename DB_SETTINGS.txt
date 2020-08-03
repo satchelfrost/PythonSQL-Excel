@@ -1,1 +1,1 @@
-{"host": "localhost", "user": "root", "pswd" : "" , "db": "gregs_list"}
+{"host": "", "user": "", "pswd" : "" , "db": ""}

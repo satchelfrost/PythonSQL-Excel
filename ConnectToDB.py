@@ -40,7 +40,8 @@ class DB:
         query = ""
         for line in lines:
             query += line
-        self.RunQuery(query)
+        if query != "blank":
+            self.RunQuery(query)
 
     def PrintResult(self):
         ## Print out a table from our query

@@ -1,0 +1,3 @@
+SELECT * FROM UserNames LIMIT 10;
+SELECT * FROM GroupTable LIMIT 10;
+SELECT * FROM GroupMembers LIMIT 10;
